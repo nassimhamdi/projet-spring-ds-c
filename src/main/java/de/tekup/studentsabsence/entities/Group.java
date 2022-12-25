@@ -18,7 +18,7 @@ import java.util.List;
 @ToString(exclude = "students")
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "_group")
+@Table(name = "group")
 public class Group {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,12 +33,9 @@ public class Group {
     @Enumerated(EnumType.STRING)
     private SpecialityEnum speciality;
     //TODO Complete Relations with other entities
-
     @OneToMany(mappedBy = "group", fetch = FetchType.LAZY,cascade = CascadeType.MERGE)
     public List<Student> students = new ArrayList<>();
 
     @OneToMany(mappedBy = "group", fetch = FetchType.LAZY,cascade = CascadeType.MERGE)
     public List<GroupSubject> groupSubjects = new ArrayList<>();
-
-
 }

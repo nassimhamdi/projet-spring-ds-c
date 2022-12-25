@@ -22,9 +22,9 @@ public class Image {
     private String fileType;
     @Lob
     private byte[] data;
-
     @JsonIgnore
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "image")
     @Nullable
     private Student student;
+
 }

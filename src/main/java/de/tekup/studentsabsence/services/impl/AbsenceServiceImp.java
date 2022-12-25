@@ -42,7 +42,6 @@ public class AbsenceServiceImp implements AbsenceService {
         List<Absence> absences = new ArrayList<>();
         //TODO complete the missing instructions
         absenceRepository.findAllByStudent_SidAndSubject_Id(sid, id).forEach(absences::add);
-        //System.out.println(absences.)
         return absences;
     }
 

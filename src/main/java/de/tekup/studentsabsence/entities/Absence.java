@@ -27,13 +27,14 @@ public class Absence implements Serializable {
     @NotNull(message = "Hours is required")
     @Positive(message = "Should be positive")
     private float hours;
-   //TODO Complete Relations with other entities
+    //TODO Complete Relations with other entities
 
     @ManyToOne(cascade = CascadeType.PERSIST)
-   @JoinColumn(name = "absences_subject")
-   public Subject subject;
+    @JoinColumn(name = "absences_subject")
+    public Subject subject;
 
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "absences_student")
     public Student student;
+
 }

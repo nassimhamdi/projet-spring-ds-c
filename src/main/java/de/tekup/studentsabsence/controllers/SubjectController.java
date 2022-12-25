@@ -29,7 +29,6 @@ public class SubjectController {
     private  final GroupSubjectService groupSubjectService;
     private  final StudentService studentService;
     private final EmailService emailService;
-
     @GetMapping({"", "/"})
     public String index(Model model) {
         List<Subject> subjects = subjectService.getAllSubjects();
@@ -75,16 +74,13 @@ public class SubjectController {
         subjectService.deleteSubject(id);
         return "redirect:/subjects";
     }
+
     @GetMapping("/{id}/show")
     public String show(@PathVariable Long id, Model model) {
-        //Question 2
-        List<Group> groups=new ArrayList<>();
-        groupSubjectService.getSubjectsGroupBySubjectId(id).forEach(groupSubject -> groups.add(groupSubject.getGroup()));
         model.addAttribute("subject", subjectService.getSubjectById(id));
-        model.addAttribute("groups",groups);
-        model.addAttribute("subjectService",subjectService);
         return "subjects/show";
     }
+
     //question 2 sending mail
     @GetMapping("/Mail/{sid}/{sbid}")
     public String sendingMail(@PathVariable Long sid,@PathVariable Long sbid){

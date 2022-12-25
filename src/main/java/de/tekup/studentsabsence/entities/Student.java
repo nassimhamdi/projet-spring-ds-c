@@ -23,39 +23,34 @@ public class Student implements Serializable {
 
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long sid;
 
-    @NotBlank(message = "First Name is required")
+    @NotBlank(message = "FirstName is required")
     private String firstName;
 
-    @NotBlank(message = "Last Name is required")
+    @NotBlank(message = "LastName is required")
     private String lastName;
 
-    @NotBlank(message = "email is required")
+    @Email
+    @NotBlank(message = "Email is required" )
     private String email;
 
-    @NotBlank(message = "phone is required")
     private String phone;
-
-    @NotNull(message = "Date is required")
-    @Past(message = "Should be a date in the past")
     @DateTimeFormat(pattern = "dd-MM-yyyy")
+    @NotNull(message = "date is required")
     private LocalDate dob;
 
     //TODO Complete Relations with other entities
-
-    @ManyToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "students")
-    public Group group;
-
     @OneToMany(mappedBy = "student", fetch = FetchType.LAZY,cascade = CascadeType.MERGE)
     public List<Absence> absencesStudent = new ArrayList<>();
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @ManyToOne
+    @JoinColumn(name = "students")
+    private  Group group;
+
+    @OneToOne(mappedBy = "student")
     @JoinColumn(name = "image_id", referencedColumnName = "id")
-    //@Column(columnDefinition = "VARCHAR(255)")
     private Image image;
-
-
 
 }

@@ -5,10 +5,7 @@ import de.tekup.studentsabsence.entities.*;
 import de.tekup.studentsabsence.enums.LevelEnum;
 import de.tekup.studentsabsence.enums.SpecialityEnum;
 import de.tekup.studentsabsence.holders.GroupSubjectHolder;
-import de.tekup.studentsabsence.services.AbsenceService;
-import de.tekup.studentsabsence.services.GroupService;
-import de.tekup.studentsabsence.services.GroupSubjectService;
-import de.tekup.studentsabsence.services.SubjectService;
+import de.tekup.studentsabsence.services.*;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -27,6 +24,8 @@ public class GroupController {
     private final SubjectService subjectService;
     private final GroupSubjectService groupSubjectService;
     private final AbsenceService absenceService;
+    private final StudentService studentService;
+
 
     @GetMapping({"", "/"})
     public String index(Model model) {
@@ -83,17 +82,12 @@ public class GroupController {
     @GetMapping("/{id}/show")
     public String show(@PathVariable long id, Model model) {
         Group group = groupService.getGroupById(id);
-        List<GroupSubject> groupSubjects =new ArrayList<GroupSubject>();
-        groupSubjectService.getSubjectsByGroupId(id).forEach(groupSubjects::add);
+
         model.addAttribute("group", group);
         model.addAttribute("groupSubjects",groupSubjectService.getSubjectsByGroupId(id));
         model.addAttribute("students",group.getStudents());
         model.addAttribute("absenceService", absenceService);
-//Q1
-        Subject maxsubject = groupSubjectService.getMaxAbsenceSubject(groupSubjects );
-        Subject minsubject= groupSubjectService.getMinAbsenceSubject(groupSubjects);
-        model.addAttribute("MaxAbcensesSubject", maxsubject);
-        model.addAttribute("MinAbcensesSubject", minsubject);
+
         group.getStudents().forEach(student -> {
 
         });
@@ -143,16 +137,28 @@ public class GroupController {
 
     @PostMapping("/{id}/add-absences")
     public String addAbsence(@PathVariable long id, @Valid Absence absence, BindingResult bindingResult, @RequestParam(value = "students", required = false) List<Student> students, Model model) {
-        //TODO Complete the body of this method : completed
-        if(bindingResult.hasErrors())
-        {
+        //TODO Complete the body of this method
+        if(bindingResult.hasErrors()) {
+            model.addAttribute("students",studentService.getAllStudents());
+            //model.addAttribute("subject",subjectService.getAllSubjects());
+            model.addAttribute("group",groupService.getGroupById(id));
             model.addAttribute("groupSubjects", groupSubjectService.getSubjectsByGroupId(id));
-            model.addAttribute("students", students);
             return "groups/add-absences";
         }
-        absenceService.addAbsence(absence);
+        Group group = groupService.getGroupById(id);
+
+        for (Student student: students) {
+            Absence ab = new Absence();
+            ab.setHours(absence.getHours());
+            ab.setStartDate(absence.getStartDate());
+            ab.setStudent(student);
+            Subject subject = subjectService.getSubjectById(absence.getSubject().getId());
+            ab.setSubject(subject);
+            Absence absence1 = absenceService.addAbsence(ab);
+            System.out.println("Absence id " + absence.getId() + " " + absence1.getSubject().getId() + " " + absence.getSubject().getName());
+        }
+
         return "redirect:/groups/"+id+"/add-absences";
     }
-
 
 }

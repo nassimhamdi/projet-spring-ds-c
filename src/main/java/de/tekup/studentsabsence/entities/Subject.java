@@ -22,6 +22,7 @@ public class Subject implements Serializable {
     @NotBlank(message = "Name is required")
     private String name;
 
+
     @OneToMany(mappedBy = "subject", fetch = FetchType.LAZY,cascade = CascadeType.MERGE)
     @Nullable
     public List<GroupSubject> groupSubjects = new ArrayList<>();
@@ -29,5 +30,4 @@ public class Subject implements Serializable {
     @OneToMany(mappedBy = "subject", fetch = FetchType.LAZY,cascade = CascadeType.MERGE)
     @Nullable
     public List<Absence> absencesSubject = new ArrayList<>();
-
 }

@@ -28,6 +28,7 @@ public class StudentController {
     private final GroupService groupService;
     private final ImageService imageService;
 
+
     @GetMapping({"", "/"})
     public String index(Model model) {
         List<Student> students = studentService.getAllStudents();
@@ -48,7 +49,6 @@ public class StudentController {
             model.addAttribute("groups", groupService.getAllGroups());
             return "students/add";
         }
-
         studentService.addStudent(student);
         return "redirect:/students";
     }
@@ -89,6 +89,8 @@ public class StudentController {
         return "students/add-image";
     }
 
+    @PostMapping("/{sid}/add-image")
+    //TODO complete the parameters of this method
     public String addImage(@PathVariable Long sid, MultipartFile image) {
         //TODO complete the body of this method
         Student student = studentService.getStudentBySid(sid);
@@ -108,7 +110,6 @@ public class StudentController {
     public void getStudentPhoto(HttpServletResponse response, @PathVariable("sid") long sid) throws Exception {
         Student student = studentService.getStudentBySid(sid);
         Image image = student.getImage();
-
         if(image != null) {
             response.setContentType(image.getFileType());
             InputStream inputStream = new ByteArrayInputStream(image.getData());
@@ -117,3 +118,4 @@ public class StudentController {
     }
 
 }
+
