@@ -1,8 +1,9 @@
 package de.tekup.studentsabsence.services;
 
-import de.tekup.studentsabsence.entities.Email;
-import de.tekup.studentsabsence.entities.Response;
+import de.tekup.studentsabsence.entities.Student;
+import de.tekup.studentsabsence.entities.Subject;
 
 public interface EmailService {
-    Response sendEmail(Email mail);
+    void sendEEmail(Student student, Subject subject);
 }
+
