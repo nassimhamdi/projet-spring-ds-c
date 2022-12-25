@@ -25,17 +25,20 @@ public class Student implements Serializable {
     @Id
     private Long sid;
 
-
+    @NotBlank(message = "First Name is required")
     private String firstName;
 
-
+    @NotBlank(message = "Last Name is required")
     private String lastName;
 
-
+    @NotBlank(message = "email is required")
     private String email;
 
-
+    @NotBlank(message = "phone is required")
     private String phone;
+
+    @NotNull(message = "Date is required")
+    @Past(message = "Should be a date in the past")
     @DateTimeFormat(pattern = "dd-MM-yyyy")
     private LocalDate dob;
 
