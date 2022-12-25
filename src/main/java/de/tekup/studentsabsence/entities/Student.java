@@ -10,6 +10,9 @@ import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Data
 @AllArgsConstructor
@@ -21,14 +24,34 @@ public class Student implements Serializable {
 
     @Id
     private Long sid;
+
+
     private String firstName;
+
+
     private String lastName;
+
+
     private String email;
+
+
     private String phone;
     @DateTimeFormat(pattern = "dd-MM-yyyy")
     private LocalDate dob;
 
     //TODO Complete Relations with other entities
+
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "students")
+    public Group group;
+
+    @OneToMany(mappedBy = "student", fetch = FetchType.LAZY,cascade = CascadeType.MERGE)
+    public List<Absence> absencesStudent = new ArrayList<>();
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "image_id", referencedColumnName = "id")
+    //@Column(columnDefinition = "VARCHAR(255)")
+    private Image image;
 
 
 

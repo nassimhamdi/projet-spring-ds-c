@@ -29,5 +29,11 @@ public class Absence implements Serializable {
     private float hours;
    //TODO Complete Relations with other entities
 
+    @ManyToOne(cascade = CascadeType.PERSIST)
+   @JoinColumn(name = "absences_subject")
+   public Subject subject;
 
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "absences_student")
+    public Student student;
 }
